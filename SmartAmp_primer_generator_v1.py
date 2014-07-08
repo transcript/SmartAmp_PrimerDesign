@@ -14,6 +14,7 @@ readline.parse_and_bind("tab: complete")
 ###############################
 
 # Part 1: input and checks
+# This should get the initial input file, check for sequence length, & ensure that only bases are present.
 
 print (" ")
 print ("This is the primer generator for Smart Amplification, version 1.")
@@ -44,6 +45,11 @@ else:
 	print ("Sequence length accepted.\n")
 	
 # Part 2: gathering all the parts of primers
+# This should generate OP1 and OP2, and gather up the parts necessary to build FP and TP.
 
 OP1 = raw_seq[0:14]
-print (OP1 + "\n")
+print ("OP1 generated: " + OP1 + "\n")
+
+OP2 = raw_seq[-15:]
+print ("OP2 generated " + OP2 + "\n")
+
