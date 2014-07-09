@@ -2,6 +2,7 @@
 # imports:
 import operator
 import sys
+import random
 
 # This lets raw_input do tab completion:
 import readline
@@ -47,9 +48,45 @@ else:
 # Part 2: gathering all the parts of primers
 # This should generate OP1 and OP2, and gather up the parts necessary to build FP and TP.
 
-OP1 = raw_seq[0:14]
-print ("OP1 generated: " + OP1 + "\n")
+temp_OP1 = raw_seq[0:15]
+OP1 = temp_OP1.replace('A','t').replace('T','a').replace('G','c').replace('C','g').upper()
+print ("OP1 generated (5'-3'):\t\t\t" + OP1 )
 
-OP2 = raw_seq[-15:]
-print ("OP2 generated " + OP2 + "\n")
+temp_OP2 = raw_seq[-15:]
+OP2 = temp_OP2.replace('A','t').replace('T','a').replace('G','c').replace('C','g').upper()
+print ("OP2 generated (5'-3'):\t\t\t" + OP2 )
 
+temp_TP = raw_seq[19:34]
+TP_DS = raw_seq[55:70]
+
+temp_FP = raw_seq[-34:-19]
+
+# Part 3: building the turn-back primer (TP)
+# This should generate complementary bases for TP, create the random filler bases, and then attach everything together to form the TP.
+
+TP_conv = temp_TP.replace('A','t').replace('T','a').replace('G','c').replace('C','g').upper()
+
+TP_rev = TP_conv[::-1]
+
+TP_filler = ""
+bases = "GATC"
+for i in xrange(30):
+	TP_filler += random.choice(bases)		# TP_filler is now a random set of bases 
+
+str = ""
+TP = str.join(TP_rev + TP_filler + TP_DS)
+print ("Turn-back primer generated (5'-3'):\t" + TP)
+
+# Part 4: building the folding primer (FP)
+# This should generate complementary bases for FP, create the random filler bases, mirror them, and then attach everything together to form the FP.
+
+FP_conv = temp_FP.replace('A','t').replace('T','a').replace('G','c').replace('C','g').upper()
+
+FP_loopA = ""
+for i in xrange(15):
+	FP_loopA += random.choice(bases)
+	
+FP_loopB = FP_loopA.replace('A','t').replace('T','a').replace('G','c').replace('C','g').upper()[::-1]
+
+FP = str.join(FP_loopA + FP_loopB + FP_conv)
+print ("Folding primer generated (5'-3'):\t" + FP)
